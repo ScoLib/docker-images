@@ -11,6 +11,8 @@ RUN apk --update add curl && \
     tar -xzvf /usr/local/leanote-linux-amd64-v${version}.bin.tar.gz -C /usr/local && \
     rm -rf /usr/local/leanote-linux-amd64-v${version}.bin.tar.gz
 
+COPY ./conf/app.conf /usr/local/leanote/conf/
+
 RUN apk add --no-cache \
             mongodb-tools \
             xvfb \
