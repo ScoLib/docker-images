@@ -14,16 +14,19 @@ RUN apk --update add curl && \
 COPY ./conf/app.conf /usr/local/leanote/conf/
 
 RUN apk add --no-cache \
-            mongodb-tools \
             xvfb \
             # Additionnal dependencies for better rendering
             ttf-freefont \
             fontconfig \
             dbus && \
+    # Install mongodb-tools from `community` repository
+    apk add --no-cache \
+            mongodb-tools \
+            --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ && \
     # Install wkhtmltopdf from `testing` repository   ---- qt5-qtbase-dev \
     apk add wkhtmltopdf \
             --no-cache \
-            --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
+            --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
             --allow-untrusted && \
     rm -rf /var/cache/apk/* && \
     # Wrapper for xvfb
