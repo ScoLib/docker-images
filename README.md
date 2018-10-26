@@ -1,2 +1,2 @@
-# leanote-images
-Leanote Docker Images
+# docker-images
+Docker Images
