@@ -3,8 +3,7 @@ FROM phusion/baseimage
 LABEL maintainer="klgd <slice1213@gmail.com>"
 
 ENV SEAFILE_VERSION 6.3.7
-ENV SEAFILE_DOWNLOAD_URL "https://download.seafile.top/d/8c29766a64d24122936f/files/?p=/seafile-pro-server_${SEAFILE_VERSION}_x86-64.tar.gz&dl=1"
-# ENV SEAFILE_DOWNLOAD_URL "https://download.seafile.com/d/6e5297246c/files/?p=/pro/seafile-pro-server_${SEAFILE_VERSION}_x86-64.tar.gz&dl=1"
+ENV SEAFILE_DOWNLOAD_URL "https://download.seafile.com/d/6e5297246c/files/?p=/pro/seafile-pro-server_${SEAFILE_VERSION}_x86-64.tar.gz&dl=1"
 
 ENV SEAFILE_HOME /opt/seafile
 # ENV SEAFILE_DIR ${SEAFILE_HOME}/seafile-data
