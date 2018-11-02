@@ -1,5 +1,7 @@
 FROM alpine:latest
 
+LABEL maintainer="klgd <slice1213@gmail.com>"
+
 ENV version=2.6.1
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories

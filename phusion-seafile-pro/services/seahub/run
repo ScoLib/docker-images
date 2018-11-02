@@ -1,0 +1,40 @@
+#!/bin/bash
+set -u
+
+cd $SEAFILE_HOME
+exec $SEAFILE_BIN/seahub.sh start &
+
+echo "Waiting 10s before starting watcher script: seahub.sh"
+sleep 10
+
+echo "Starting watcher script: seahub.sh"
+while true; do
+	
+	for SEAFILE_PROC in "gunicorn"
+	do
+		pkill -0 -f "${SEAFILE_PROC}"
+		RC=$?
+		
+		if [ $CONTAINER_DEBUG == "1" ]; then
+			echo "checking on ${SEAFILE_PROC}, return: ${RC}"
+		fi
+		
+		if [ $RC != 0 ]; then
+			echo "${SEAFILE_PROC} has returned non-zero exit code: ${RC}"
+			# TODO call seahub.sh stop
+			exit $RC
+		fi
+		
+		sleep 1
+    done
+	
+    sleep 10
+done
+
+
+# #!/bin/sh
+# echo Starting seahub ...
+# ${SEAFILE_INSTALL_DIR}/seahub.sh start
+# echo Tailing seahub STDOUT
+# tail -f /proc/`cat ${SEAFILE_INSTALL_DIR}/runtime/seahub.pid`/fd/1
+# echo seahub closed.
