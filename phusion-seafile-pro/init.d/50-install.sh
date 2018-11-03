@@ -7,6 +7,7 @@ cd $SEAFILE_BIN
 if [ $INSTALLED_VERSION != "NONE" ]; then
 	# cd ${SEAFILE_HOME}
 	# ln -s seafile-pro-server-${SEAFILE_VERSION} seafile-server-latest
+	echo "Seafile is installed ..."
 	exit 0
 fi
 

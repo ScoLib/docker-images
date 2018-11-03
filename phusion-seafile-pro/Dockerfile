@@ -6,21 +6,6 @@ ENV SEAFILE_VERSION 6.3.7
 ENV SEAFILE_DOWNLOAD_URL "https://download.seafile.com/d/6e5297246c/files/?p=/pro/seafile-pro-server_${SEAFILE_VERSION}_x86-64.tar.gz&dl=1"
 
 ENV SEAFILE_HOME /opt/seafile
-# ENV SEAFILE_DIR ${SEAFILE_HOME}/seafile-data
-# ENV SEAFILE_INSTALL_DIR ${SEAFILE_HOME}/seafile-pro-server-${SEAFILE_VERSION}/
-
-# ENV USE_EXISTING_DB 0
-# ENV MYSQL_HOST 127.0.0.1
-# ENV MYSQL_PORT 3306
-# ENV CCNET_DB ccnet-db
-# ENV SEAFILE_DB seafile-db
-# ENV SEAHUB_DB seahub-db
-
-# ENV SEAHUB_ADMIN_EMAIL admin@seahub.com
-# ENV SEAHUB_ADMIN_PASS pass
-
-# ENV SETUP_TYPE ""
-# ENV ENABLE_CRON_GC 0
 
 RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list && \
     sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
@@ -41,8 +26,13 @@ RUN DEBIAN_FRONTEND=noninteractive \
     python-memcache \
     python-ldap \
     python-urllib3 \
+    libreoffice \
+    libreoffice-script-provider-python \
+    ttf-wqy-microhei \
+    ttf-wqy-zenhei \
+    xfonts-wqy \
     ffmpeg \
-    wget \
+    # wget \
 \
 # install python dependencies
 # && pip install --upgrade pip \
@@ -77,7 +67,7 @@ RUN mkdir -p $SEAFILE_HOME \
 # install services, scripts, config
 ADD     services    /etc/service
 ADD     init.d      /etc/my_init.d
-# ADD     config      /config
+ADD     config      /config
 ADD     cron        /etc/cron.d
 ADD     bin         /usr/local/sbin
 
