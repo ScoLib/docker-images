@@ -85,5 +85,6 @@ VOLUME /data
 
 EXPOSE 8000
 EXPOSE 8082
+EXPOSE 8080
 
 CMD ["/sbin/my_init"]

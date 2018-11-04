@@ -6,7 +6,7 @@ set -e
 # move from SEAFILE_HOME to DATA_DIR
 for TARGET_DIR in "ccnet" "conf" "seafile-data" "seahub-data" "pro-data"
 do
-	if [ -e "${SEAFILE_HOME}/${TARGET_DIR}" -a ! -L "${BASEPATH}/${TARGET_DIR}" ]
+	if [ -e "${SEAFILE_HOME}/${TARGET_DIR}" -a ! -L "${DATA_DIR}/${TARGET_DIR}" ]
 	then
 		echo "moving: ${SEAFILE_HOME}/${TARGET_DIR} -> ${DATA_DIR}/${TARGET_DIR}"
 		mv ${SEAFILE_HOME}/${TARGET_DIR} ${DATA_DIR}
