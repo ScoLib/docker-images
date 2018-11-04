@@ -23,14 +23,19 @@ RUN DEBIAN_FRONTEND=noninteractive \
     python-setuptools \
     python-imaging \
     python-mysqldb \
-    python-memcache \
+    # python-memcache \
     python-ldap \
     python-urllib3 \
+\
     libreoffice \
     libreoffice-script-provider-python \
     ttf-wqy-microhei \
     ttf-wqy-zenhei \
     xfonts-wqy \
+\
+    python-dev \
+    libmemcached-dev \
+    zlib1g-dev \
     ffmpeg \
     # wget \
 \
@@ -41,6 +46,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
         pillow \
         requests \
         moviepy \
+        pylibmc \
+        django-pylibmc \
         -i http://mirrors.aliyun.com/pypi/simple/ \
         --trusted-host mirrors.aliyun.com \
 \
