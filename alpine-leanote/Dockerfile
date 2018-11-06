@@ -2,18 +2,33 @@ FROM alpine:latest
 
 LABEL maintainer="klgd <slice1213@gmail.com>"
 
-ENV version=2.6.1
+ENV LEANOTE_VERSION=2.6.1
+ENV INSTALL_DIR=/opt
+ENV LEANOTE_HOME=${INSTALL_DIR}/leanote
+ENV LEANOTE_DATA_DIR=/data
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories
+# mongo
+ENV LEANOTE_SITE_URL=http://localhost:9000
+ENV LEANOTE_MONGO_HOST=mongo
+ENV LEANOTE_MONGO_PORT=27017
+ENV LEANOTE_MONGO_DATABASE=leanote
+# ENV LEANOTE_MONGO_ADMIN_NAME=admin
+
+
+RUN echo $'@community http://dl-cdn.alpinelinux.org/alpine/edge/community\n\
+@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories
+
 
 RUN apk --update add curl && \
-    curl -L http://sourceforge.net/projects/leanote-bin/files/${version}/leanote-linux-amd64-v${version}.bin.tar.gz/download >> \
-    /usr/local/leanote-linux-amd64-v${version}.bin.tar.gz && \
+    curl -L http://sourceforge.net/projects/leanote-bin/files/${LEANOTE_VERSION}/leanote-linux-amd64-v${LEANOTE_VERSION}.bin.tar.gz/download >> \
+    /tmp/leanote-linux-amd64-v${LEANOTE_VERSION}.bin.tar.gz && \
     apk del --purge curl && \
-    tar -xzvf /usr/local/leanote-linux-amd64-v${version}.bin.tar.gz -C /usr/local && \
-    rm -rf /usr/local/leanote-linux-amd64-v${version}.bin.tar.gz
+    mkdir -p ${INSTALL_DIR} && \
+    tar -xzvf /tmp/leanote-linux-amd64-v${LEANOTE_VERSION}.bin.tar.gz -C ${INSTALL_DIR} && \
+    rm -rf /tmp/leanote-linux-amd64-v${LEANOTE_VERSION}.bin.tar.gz
 
-COPY ./conf/app.conf /usr/local/leanote/conf/
+# COPY ./conf/app.conf ${LEANOTE_HOME}/conf/
 
 RUN apk add --no-cache \
             xvfb \
@@ -23,12 +38,10 @@ RUN apk add --no-cache \
             dbus && \
     # Install mongodb-tools from `community` repository
     apk add --no-cache \
-            mongodb-tools \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ && \
+            mongodb-tools@community && \
     # Install wkhtmltopdf from `testing` repository   ---- qt5-qtbase-dev \
-    apk add wkhtmltopdf \
-            --no-cache \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+    apk add --no-cache \
+            wkhtmltopdf@testing \
             --allow-untrusted && \
     rm -rf /var/cache/apk/* && \
     # Wrapper for xvfb
@@ -46,6 +59,9 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
     ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
+WORKDIR  ${LEANOTE_HOME}/bin
+VOLUME $LEANOTE_DATA_DIR
+
 EXPOSE 9000
-WORKDIR  /usr/local/leanote/bin
+
 CMD ["sh","run.sh"]
