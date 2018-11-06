@@ -14,11 +14,8 @@ do
 	else
 		echo "${SEAFILE_HOME}/${TARGET_DIR} has moved"
 	fi
-done
 
-# symlink from DATA_DIR to SEAFILE_HOME
-for TARGET_DIR in "ccnet" "conf" "seafile-data" "seahub-data" "pro-data" "seahub.db"
-do
+	# symlink from DATA_DIR to SEAFILE_HOME
 	if [ -e "${DATA_DIR}/${TARGET_DIR}" -a ! -L "${SEAFILE_HOME}/${TARGET_DIR}" ]
 	then
 		echo "linking: ${SEAFILE_HOME}/${TARGET_DIR} -> ${DATA_DIR}/${TARGET_DIR}"
