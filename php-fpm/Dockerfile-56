@@ -134,7 +134,7 @@ RUN apt-get install -y libc-client-dev libkrb5-dev && \
 #####################################
 
 RUN apt-get install libyaml-dev -y \
-    && pecl install yaml \
+    && pecl install yaml-1.3.1 \
     && docker-php-ext-enable yaml
 
 # Clean up
