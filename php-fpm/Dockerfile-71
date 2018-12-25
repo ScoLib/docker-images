@@ -40,28 +40,19 @@ RUN docker-php-ext-install mcrypt \
     && docker-php-ext-configure gd \
         --enable-gd-native-ttf \
         --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir=/usr/include/freetype2 && \
-    docker-php-ext-install gd
-
-#####################################
-# ZipArchive:
-#####################################
+        --with-freetype-dir=/usr/include/freetype2 \
+    && docker-php-ext-install gd \
+    # Install the bcmath extension
+    && docker-php-ext-install bcmath \
+    # Install the Exif extension
+    && docker-php-ext-install exif \
+    # Install the Sockets extension
+    && docker-php-ext-install sockets
 
 RUN apt-get install libzip-dev -y && \
     docker-php-ext-configure zip --with-libzip && \
     # Install the zip extension
     docker-php-ext-install zip
-
-#####################################
-# bcmath:
-#####################################
-
-# Install the bcmath extension
-RUN docker-php-ext-install bcmath
-
-#####################################
-# PHP Memcached:
-#####################################
 
 # Install the php memcached extension
 RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \
@@ -78,13 +69,7 @@ RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-m
     && rm /tmp/memcached.tar.gz \
     && docker-php-ext-enable memcached
 
-# Enable Exif PHP extentions requirements
-RUN docker-php-ext-install exif
-
-#####################################
-# Opcache:
-#####################################
-
+# Install the opcache extension
 RUN docker-php-ext-install opcache
 # Copy opcache configration
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
@@ -92,4 +77,4 @@ COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 # Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    rm /var/log/lastlog /var/log/faillog
+    rm -f /var/log/lastlog /var/log/faillog
