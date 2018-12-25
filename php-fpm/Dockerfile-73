@@ -41,15 +41,6 @@ RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install gd
 
 #####################################
-# AMQP:
-#####################################
-
-RUN apt-get install librabbitmq-dev -y && \
-    # Install the amqp extension
-    pecl install amqp && \
-    docker-php-ext-enable amqp
-
-#####################################
 # ZipArchive:
 #####################################
 
@@ -64,7 +55,6 @@ RUN apt-get install libzip-dev -y && \
 
 # Install the bcmath extension
 RUN docker-php-ext-install bcmath
-
 
 #####################################
 # PHP Memcached:
@@ -95,38 +85,6 @@ RUN docker-php-ext-install exif
 RUN docker-php-ext-install opcache
 # Copy opcache configration
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-
-#####################################
-# LDAP:
-#####################################
-
-RUN apt-get install -y libldap2-dev && \
-    docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
-    docker-php-ext-install ldap 
-
-#####################################
-# ImageMagick:
-#####################################
-
-RUN apt-get install -y libmagickwand-dev imagemagick && \
-    pecl install imagick && \
-    docker-php-ext-enable imagick
-
-#####################################
-# IMAP:
-#####################################
-
-RUN apt-get install -y libc-client-dev libkrb5-dev && \
-    docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
-    docker-php-ext-install imap
-
-#####################################
-# YAML:
-#####################################
-
-RUN apt-get install libyaml-dev -y \
-    && pecl install yaml \
-    && docker-php-ext-enable yaml
 
 # Clean up
 RUN apt-get clean && \
