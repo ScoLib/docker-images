@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.11
+FROM phusion/baseimage:0.9.18
 
 LABEL maintainer="klgd <slice1213@gmail.com>"
 
