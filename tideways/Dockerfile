@@ -1,9 +1,9 @@
-FROM phusion/baseimage:0.9.18
+FROM phusion/baseimage
 
 LABEL maintainer="klgd <slice1213@gmail.com>"
 
 RUN echo 'deb http://s3-eu-west-1.amazonaws.com/tideways/packages debian main' > /etc/apt/sources.list.d/tideways.list && \
-    curl -sS https://s3-eu-west-1.amazonaws.com/tideways/packages/EEB5E8F4.gpg | sudo apt-key add - && \
+    curl -sS https://s3-eu-west-1.amazonaws.com/tideways/packages/EEB5E8F4.gpg | apt-key add - && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install tideways-daemon && \
     apt-get autoremove --assume-yes && \
