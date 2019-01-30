@@ -12,4 +12,6 @@ RUN echo 'deb http://s3-eu-west-1.amazonaws.com/tideways/packages debian main' >
 
 ADD run.sh /run.sh
 
+RUN chmod +x /run.sh
+
 CMD ["/run.sh"]
