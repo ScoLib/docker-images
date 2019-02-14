@@ -50,7 +50,7 @@ RUN docker-php-ext-install mysql
 # https://github.com/php-memcached-dev/php-memcached
 RUN pecl install memcached-2.2.0 && \
     docker-php-ext-enable memcached
-    
+
 # Install the PHP pdo_mysql extention
 RUN docker-php-ext-install pdo_mysql \
     # Install the PHP pdo_pgsql extention
@@ -62,7 +62,7 @@ RUN docker-php-ext-install pdo_mysql \
     # Install the Sockets extension
     && docker-php-ext-install sockets \
     # Install the zip extension
-    && docker-php-ext-configure zip --with-libzip && \
+    && docker-php-ext-configure zip --with-libzip \
     # Install the zip extension
     && docker-php-ext-install zip \
     # Install the opcache extension
