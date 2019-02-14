@@ -6,7 +6,7 @@
 
 FROM php:7.1-fpm
 
-LABEL maintainer="Mahmoud Zalt <mahmoud@zalt.me>"
+LABEL maintainer="klgd <slice1213@gmail.com>"
 
 #
 #--------------------------------------------------------------------------
@@ -22,55 +22,47 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         curl \
         libmemcached-dev \
+        # libz-dev is zlib1g-dev
         libz-dev \
         libpq-dev \
         libjpeg-dev \
         libpng-dev \
         libfreetype6-dev \
         libssl-dev \
-        libmcrypt-dev
+        libmcrypt-dev \
+        libzip-dev
 
 # Install the PHP mcrypt extention
-RUN docker-php-ext-install mcrypt \
-    # Install the PHP pdo_mysql extention
-    && docker-php-ext-install pdo_mysql \
-    # Install the PHP pdo_pgsql extention
-    && docker-php-ext-install pdo_pgsql \
-    # Install the PHP gd library
-    && docker-php-ext-configure gd \
+RUN docker-php-ext-install mcrypt
+
+# Install the PHP gd library
+RUN docker-php-ext-configure gd \
         --enable-gd-native-ttf \
         --with-jpeg-dir=/usr/lib \
         --with-freetype-dir=/usr/include/freetype2 \
-    && docker-php-ext-install gd \
+    && docker-php-ext-install gd
+
+# Install the php memcached extension
+# https://github.com/php-memcached-dev/php-memcached
+RUN docker-php-ext-install memcached
+
+# Install the PHP pdo_mysql extention
+RUN docker-php-ext-install pdo_mysql \
+    # Install the PHP pdo_pgsql extention
+    && docker-php-ext-install pdo_pgsql \
     # Install the bcmath extension
     && docker-php-ext-install bcmath \
     # Install the Exif extension
     && docker-php-ext-install exif \
     # Install the Sockets extension
-    && docker-php-ext-install sockets
-
-RUN apt-get install libzip-dev -y && \
-    docker-php-ext-configure zip --with-libzip && \
+    && docker-php-ext-install sockets \
     # Install the zip extension
-    docker-php-ext-install zip
+    && docker-php-ext-configure zip --with-libzip && \
+    # Install the zip extension
+    && docker-php-ext-install zip \
+    # Install the opcache extension
+    && docker-php-ext-install opcache
 
-# Install the php memcached extension
-RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \
-    && mkdir -p memcached \
-    && tar -C memcached -zxvf /tmp/memcached.tar.gz --strip 1 \
-    && ( \
-        cd memcached \
-        && phpize \
-        && ./configure \
-        && make -j$(nproc) \
-        && make install \
-    ) \
-    && rm -r memcached \
-    && rm /tmp/memcached.tar.gz \
-    && docker-php-ext-enable memcached
-
-# Install the opcache extension
-RUN docker-php-ext-install opcache
 # Copy opcache configration
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
