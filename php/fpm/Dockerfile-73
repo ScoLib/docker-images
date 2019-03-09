@@ -8,6 +8,8 @@ FROM php:7.3-fpm
 
 LABEL maintainer="klgd <slice1213@gmail.com>"
 
+RUN php -v
+
 #
 #--------------------------------------------------------------------------
 # Software's Installation
