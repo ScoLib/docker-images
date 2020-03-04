@@ -66,7 +66,7 @@ RUN set -eux; \
     # Install the PHP mcrypt extention
     docker-php-ext-install mcrypt; \
     # MySQL extenstion is available for Php5.6 and lower only
-    docker-php-ext-install mysql mysqli; \
+    docker-php-ext-install mysql; \
     # Clean up
     apt-get clean; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
