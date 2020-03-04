@@ -4,7 +4,7 @@
 #--------------------------------------------------------------------------
 #
 
-FROM php:7.2-fpm
+FROM php:7.4-fpm
 
 LABEL maintainer="klgd <slice1213@gmail.com>"
 
@@ -34,7 +34,9 @@ RUN set -eux; \
         libfreetype6-dev \
         libssl-dev \
         libmcrypt-dev \
+        libonig-dev \
         libzip-dev
+
 
 RUN set -eux; \
     # Install the PHP pdo_mysql extention
@@ -43,8 +45,9 @@ RUN set -eux; \
     docker-php-ext-install pdo_pgsql; \
     # Install the PHP gd library
     docker-php-ext-configure gd \
-        --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir=/usr/include/freetype2; \
+            --prefix=/usr \
+            --with-jpeg \
+            --with-freetype; \
     docker-php-ext-install gd; \
     php -r 'var_dump(gd_info());'; \
     # Install the bcmath extension
@@ -70,3 +73,4 @@ RUN set -eux; \
 
 # Copy opcache configration
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
