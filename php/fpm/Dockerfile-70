@@ -56,7 +56,6 @@ RUN set -eux; \
     docker-php-ext-install sockets; \
     # Install the zip extension
     docker-php-ext-configure zip --with-libzip; \
-    # Install the zip extension
     docker-php-ext-install zip; \
     # Install the opcache extension
     docker-php-ext-install opcache; \
